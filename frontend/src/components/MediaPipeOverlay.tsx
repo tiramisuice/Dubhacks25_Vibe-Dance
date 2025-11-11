@@ -84,25 +84,34 @@ export function MediaPipeOverlay({ videoRef, mediaPipeResult, isActive, classNam
 
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 3; // Thicker lines for better visibility
 
-    // Draw pose connections
+    // Draw ONLY main body skeleton - ignore face landmarks (0-10)
     const connections = [
-      // Face
-      [0, 1], [1, 2], [2, 3], [3, 7],
-      [0, 4], [4, 5], [5, 6], [6, 8],
-      // Torso
-      [11, 12], [11, 13], [12, 14], [13, 15], [14, 16],
-      [11, 23], [12, 24], [23, 24],
-      // Arms
-      [11, 13], [13, 15], [15, 17], [15, 19], [15, 21],
-      [12, 14], [14, 16], [16, 18], [16, 20], [16, 22],
-      // Legs
-      [23, 25], [25, 27], [27, 29], [27, 31],
-      [24, 26], [26, 28], [28, 30], [28, 32]
+      // Torso (main body)
+      [11, 12], // Left shoulder to right shoulder
+      [11, 23], // Left shoulder to left hip
+      [12, 24], // Right shoulder to right hip
+      [23, 24], // Left hip to right hip
+      
+      // Left arm
+      [11, 13], // Left shoulder to left elbow
+      [13, 15], // Left elbow to left wrist
+      
+      // Right arm
+      [12, 14], // Right shoulder to right elbow
+      [14, 16], // Right elbow to right wrist
+      
+      // Left leg
+      [23, 25], // Left hip to left knee
+      [25, 27], // Left knee to left ankle
+      
+      // Right leg
+      [24, 26], // Right hip to right knee
+      [26, 28]  // Right knee to right ankle
     ];
 
-    // Draw connections
+    // Draw skeleton connections
     connections.forEach(([start, end]) => {
       if (landmarks[start] && landmarks[end] && 
           landmarks[start][3] > 0.5 && landmarks[end][3] > 0.5) {
@@ -118,23 +127,24 @@ export function MediaPipeOverlay({ videoRef, mediaPipeResult, isActive, classNam
       }
     });
 
-    // Draw landmarks
-    landmarks.forEach((landmark, index) => {
-      if (landmark[3] > 0.5) { // Only draw visible landmarks
-        const x = landmark[0] * canvasWidth;
-        const y = landmark[1] * canvasHeight;
+    // Draw only key body landmarks (no face)
+    const keyBodyPoints = [11, 12, 13, 14, 15, 16, 23, 24, 25, 26, 27, 28]; // Shoulders, elbows, wrists, hips, knees, ankles
+    
+    keyBodyPoints.forEach((index) => {
+      if (landmarks[index] && landmarks[index][3] > 0.5) {
+        const x = landmarks[index][0] * canvasWidth;
+        const y = landmarks[index][1] * canvasHeight;
         
+        // Draw larger landmark point
         ctx.beginPath();
-        ctx.arc(x, y, 3, 0, 2 * Math.PI);
+        ctx.arc(x, y, 4, 0, 2 * Math.PI);
         ctx.fill();
         
-        // Draw landmark index for debugging (optional)
-        if (index < 10) { // Only show first 10 for readability
-          ctx.fillStyle = 'white';
-          ctx.font = '10px Arial';
-          ctx.fillText(index.toString(), x + 5, y - 5);
-          ctx.fillStyle = color;
-        }
+        // Add white border for better visibility
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.strokeStyle = color; // Reset stroke color
       }
     });
   };

@@ -48,3 +48,6 @@ if __name__ == "__main__":
     else:
         print("\n⚠️  API key configuration needs to be fixed.")
         print("Please check your .env file and try again.")
+
+
+

@@ -19,10 +19,11 @@ export function ReviewPage({ routineId, segmentId, onPracticeAgain, onBack, onLe
   const [isPlaying, setIsPlaying] = useState(false);
   const [replayProgress, setReplayProgress] = useState(40);
 
-  const overallAccuracy = 62;
-  const timingAccuracy = 67;
-  const poseAccuracy = 60;
-  const consistency = 58;
+  // Generate random scores between 40-70
+  const overallAccuracy = Math.floor(Math.random() * 31) + 40; // 40-70
+  const timingAccuracy = Math.floor(Math.random() * 31) + 40; // 40-70
+  const poseAccuracy = Math.floor(Math.random() * 31) + 40; // 40-70
+  const consistency = Math.floor(Math.random() * 31) + 40; // 40-70
 
   // Mock beat-by-beat performance data (48 beats)
   const beatPerformance = [

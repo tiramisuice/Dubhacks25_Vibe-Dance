@@ -286,3 +286,6 @@ When contributing to the dual snapshot system:
 ---
 
 **Note**: This system requires an OpenAI API key with GPT-4o vision access. Ensure you have appropriate API credits and rate limits configured.
+
+
+

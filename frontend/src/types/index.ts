@@ -3,6 +3,7 @@ export interface Routine {
   title: string;
   artist: string;
   coverUrl: string;
+  videoUrl?: string; // Optional video URL for the routine
   bpm: number;
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
   duration: number; // seconds

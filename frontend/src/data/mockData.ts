@@ -33,12 +33,13 @@ export const mockRoutines: Routine[] = [
   // },
   {
     id: '3',
-    title: 'GO!',
-    artist: 'cortis',
-    coverUrl: 'https://i.scdn.co/image/ab67616d0000b2734b56a34b0c2b3798fd46f855',
+    title: 'Touch',
+    artist: 'KATSEYE ',
+    coverUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTU7X1sCcVlFXT_2NQi9A-o0jElFb49U6fyoA&s',
+    videoUrl: '/src/data/touch.mp4',
     bpm: 110,
     difficulty: 'Beginner',
-    duration: 164,
+    duration: 35,
     tags: ['smooth', 'groovy', 'chill'],
     segments: [
       { id: 's1', name: 'Intro', startBeat: 0, endBeat: 8, beats: 8 },

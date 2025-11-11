@@ -315,7 +315,7 @@ class DualSnapshotService:
         try:
             # Try with a very simple prompt to avoid blocking - send both images
             simple_content = [
-                {"type": "text", "text": "Look at the first image and the second image, the first image is the user trying to dance like second image, and the second is the professional dancer. Give SHORT, COACH-LIKE feedback (max 50 words) about how the user can improve. Be direct and actionable. Please respond in JSON format: {\"feedback_text\": \"short coach feedback here\", \"similarity_score\": 0.8, \"severity\": \"medium\", \"focus_areas\": [\"area1\", \"area2\"], \"specific_issues\": [\"issue1\"], \"recommendations\": [\"recommendation1\"], \"positive_feedback\": \"positive note\", \"is_positive\": true}"},
+                {"type": "text", "text": "Look at the first image and the second image, the first image is the user trying to dance like second image, and the second is the professional dancer. Give SHORT, COACH-LIKE feedback (max 50 words) describe about the user's movment like body part, desrbie things such as if arms not high enough, hands, legs, shoulder, anything in the body part. Be direct and actionable, or if user's full body is not in the windows, tell it to mmove back, . Please respond in JSON format: {\"feedback_text\": \"short coach feedback here\", \"similarity_score\": 0.8, \"severity\": \"medium\", \"focus_areas\": [\"area1\", \"area2\"], \"specific_issues\": [\"issue1\"], \"recommendations\": [\"recommendation1\"], \"positive_feedback\": \"positive note\", \"is_positive\": true}"},
                 {"type": "image_url", "image_url": {"url": webcam_data_url, "detail": "low"}},
                 {"type": "image_url", "image_url": {"url": reference_data_url, "detail": "low"}},
             ]
@@ -582,15 +582,14 @@ class DualSnapshotService:
         # Create prompt for Tier 2 analysis
         prompt = f"""
         You are a dance coach analyzing the past 3 seconds of a student's dance practice.
+        Analyze the trends and provide:
+        Feedback with strong words after you look like user's movment, such as "ARMS HIGHER" "MORE LEGS" "GOODJOB" "You are DOING awesome" "body move more" etc but the respond should be based on useer's movment and not just the feedback.
         
         Here are the recent analysis results (every 0.5 seconds):
         {json.dumps(analysis_data, indent=2)}
         
         Analyze the trends and provide:
-        1. Overall performance assessment
-        2. Key improvement areas
-        3. Encouragement and motivation
-        4. Trend analysis (getting better/worse/consistent)
+        Feedback with strong words such as "ARMS HIGHER" "GOODJOB" "You are DOING awesome" "body move more" etc
         
         Respond in JSON format:
         {{

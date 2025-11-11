@@ -292,6 +292,7 @@ class DualSnapshotService {
       clearInterval(this.captureInterval);
       this.captureInterval = null;
     }
+    // Don't set isCapturing to false here - keep it true so resume works properly
     console.log('[DualSnapshot] Paused auto capture - OpenAI API calls stopped to save costs');
   }
 
@@ -301,7 +302,10 @@ class DualSnapshotService {
   resumeAutoCapture(webcamVideoElement: HTMLVideoElement, intervalMs: number = 500): void {
     console.log(`[DualSnapshot] Attempting to resume - isCapturing: ${this.isCapturing}, hasInterval: ${!!this.captureInterval}`);
     
-    if (this.isCapturing && !this.captureInterval) {
+    // Set capturing to true and resume if not already running
+    this.isCapturing = true;
+    
+    if (!this.captureInterval) {
       console.log(`[DualSnapshot] Resumed auto capture - OpenAI API calls will resume (every ${intervalMs}ms)`);
       this.captureInterval = window.setInterval(async () => {
         if (!this.videoElement) {

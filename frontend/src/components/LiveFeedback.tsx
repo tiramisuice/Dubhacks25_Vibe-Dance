@@ -46,13 +46,8 @@ export function LiveFeedback({ overallAccuracy, isPlaying, dualFeedback, dualErr
   // Store the last Tier 2 feedback to prevent flickering
   const [lastTier2Feedback, setLastTier2Feedback] = useState<string | null>(null);
 
-  // Clear feedback when video is paused
-  useEffect(() => {
-    if (!isPlaying && lastTier2Feedback) {
-      console.log('[LiveFeedback] Video paused - clearing Tier 2 feedback');
-      setLastTier2Feedback(null);
-    }
-  }, [isPlaying, lastTier2Feedback]);
+  // Keep feedback visible even when video is paused
+  // Removed the logic that clears feedback on pause
 
   // Only process and update when we have actual Tier 2 data
   useEffect(() => {
